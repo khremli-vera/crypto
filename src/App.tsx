@@ -6,14 +6,12 @@ import { BrowserRouter } from "react-router-dom";
 
 import AppRoutes from "@/AppRoutes";
 import Header from "@/uikits/Header/Header";
-// import { ProductLoader } from "./features/ProductLoader";
 
 const queryClient = new QueryClient();
 
 function App() {
    return (
       <QueryClientProvider client={queryClient}>
-         {/* <ProductLoader /> */}
          <React.StrictMode>
             <BrowserRouter>
                <Header />
