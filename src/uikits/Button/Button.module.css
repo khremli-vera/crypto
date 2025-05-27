@@ -1,0 +1,36 @@
+.button {
+   border-radius: 8px;
+   border: 2px solid transparent;
+   padding: 0.6em 1.2em;
+   font-size: 1.6em;
+   font-weight: 600;
+   font-family: inherit;
+   background-color: #e4e9f3;
+   cursor: pointer;
+   transition: border-color 0.25s;
+}
+
+.button:hover {
+   background-color: #fff;
+   border-color: #0d0c22;
+}
+
+.borderButton {
+   border: 2px solid #fff;
+}
+
+.blockButton {
+   max-width: 100px;
+   align-self: center;
+   margin-top: 2rem;
+}
+
+.wideButton {
+   width: 20rem;
+}
+
+.activeWideButton {
+   border: 2px solid #0d0c22;
+   background-color: #fff;
+   width: 20rem;
+}

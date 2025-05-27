@@ -1,0 +1,48 @@
+.form {
+   background-color: #fff;
+   padding: 2rem;
+   border-radius: 8px;
+   max-width: 70%;
+   margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+}
+
+.formTitle {
+   align-self: center;
+}
+
+.formLabel {
+   font-weight: 600;
+   font-size: 1.6rem;
+}
+
+.formInput {
+   padding: 0.6em 1.2em;
+   font-size: 1.4em;
+   border-radius: 8px;
+   border: 2px solid transparent;
+   background-color: #e4e9f3;
+   width: 90%;
+   transition: border-color 0.25s;
+}
+
+.formInput:focus {
+   outline: none;
+   background-color: #fff;
+   border-color: #0d0c22;
+}
+
+.formError {
+   color: #c0392b;
+   font-weight: 400;
+   font-size: 1.4rem;
+   margin: 0.5rem 0;
+   padding: 0;
+}
+
+.formActions {
+   display: flex;
+   gap: 2rem;
+}

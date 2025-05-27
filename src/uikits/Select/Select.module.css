@@ -1,0 +1,49 @@
+.select {
+   border-radius: 8px;
+   border: 2px solid #ffffff;
+   padding: 0.6em 1.2em;
+   font-size: 1.6em;
+   font-weight: 400;
+   font-family: inherit;
+   background-color: #e4e9f3;
+   cursor: pointer;
+   transition: all 0.25s;
+
+   appearance: none;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+   background-repeat: no-repeat;
+   background-position: right 1.2em center;
+   background-size: 1em;
+   padding-right: 2.5em;
+   min-width: 200px;
+}
+
+.select:hover {
+   background-color: #fff;
+   border-color: #0d0c22;
+}
+
+.select:focus {
+   outline: none;
+}
+
+.select option {
+   background-color: #fff;
+   color: #0d0c22;
+   font-size: 1em;
+   padding: 0.5em;
+}
+
+.select option:hover {
+   background-color: #e4e9f3;
+}
+.select option:checked {
+   background-color: #0d0c22;
+   color: #e4e9f3;
+}
+
+.smallSelect {
+   min-width: 12rem;
+}

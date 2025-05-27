@@ -1,0 +1,21 @@
+.productList {
+   display: flex;
+   justify-content: space-around;
+   flex-wrap: wrap;
+   padding: 2rem;
+   background-color: #ffffff;
+   border-radius: 8px;
+   margin: 2rem 0;
+   gap: 0.5rem;
+}
+
+.selectContainer {
+   display: flex;
+   justify-content: flex-end;
+   width: 100%;
+}
+
+.productsContainer {
+   margin-top: -60px;
+   text-align: center;
+}
