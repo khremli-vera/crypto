@@ -9,7 +9,7 @@ interface ProductCardProps {
    product: IProduct;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard = React.memo(({ product }: ProductCardProps) => {
    const [priceType, setPriceType] = useState("buy");
    const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setPriceType(e.target.value);
@@ -50,4 +50,4 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
          />
       </div>
    );
-};
+});
