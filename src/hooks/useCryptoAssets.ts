@@ -19,7 +19,7 @@ export const useCryptoAssets = (
 ): UseQueryResult<ICryptoData> => {
    return useQuery({
       // keepPreviousData: true,
-      queryKey: ["crypto-assets", page],
+      queryKey: ["crypto-assets", page, limit],
       queryFn: async () => {
          // вернуть этот вариант потом, пока ошибка на fetch(COINGECKO_URL)
 
