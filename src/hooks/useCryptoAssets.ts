@@ -1,4 +1,8 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+   useQuery,
+   UseQueryResult,
+   keepPreviousData,
+} from "@tanstack/react-query";
 
 import {
    MESSARI_URL,
@@ -9,6 +13,8 @@ import {
 } from "@/constants";
 import { IProduct, IProductDTO } from "@/shared/types/product";
 
+// использовать useQueries
+
 import { ICryptoData } from "@/shared/types/cryptoData";
 import { coingeckoAssets } from "./coingeckoAssets";
 import { ratesUSD } from "./exChangeRates";
@@ -18,7 +24,6 @@ export const useCryptoAssets = (
    limit: number
 ): UseQueryResult<ICryptoData> => {
    return useQuery({
-      // keepPreviousData: true,
       queryKey: ["crypto-assets", page, limit],
       queryFn: async () => {
          // вернуть этот вариант потом, пока ошибка на fetch(COINGECKO_URL)
@@ -95,6 +100,7 @@ export const useCryptoAssets = (
             maxPage,
          };
       },
+      placeholderData: keepPreviousData,
       staleTime: 1000 * 60,
    });
 };
