@@ -9,11 +9,8 @@ import { itemsPerPage, pageLimit } from "@/constants";
 import styles from "./TradeForm.module.css";
 
 const TradeForm: React.FC = () => {
-   //load all products by 1 page
-   const { data, isLoading, error } = useCryptoAssets(
-      1,
-      pageLimit * itemsPerPage
-   );
+   //add limit 100 products
+   const { data, isLoading, error } = useCryptoAssets(pageLimit * itemsPerPage);
 
    const products = data?.products || [];
 

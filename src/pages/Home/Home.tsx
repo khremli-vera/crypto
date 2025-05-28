@@ -2,7 +2,6 @@ import ProductList from "@/components/ProductList/ProductList";
 import Header from "@/uikits/Header/Header";
 
 import styles from "./Home.module.css";
-// посмтотеть с большой буква тили или нет
 
 const Home = () => {
    return (

@@ -1,33 +1,23 @@
 import React from "react";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { ProductCard } from "@/components/ProductCard/ProductCard";
 import Button from "@/uikits/Button/Button";
 import Select from "@/uikits/Select/Select";
 import { useCryptoAssets } from "@/hooks/useCryptoAssets";
-import { IProduct } from "@/shared/types/product";
 
 import styles from "./ProductList.module.css";
 import { itemsPerPage } from "@/constants";
 
 const ProductList = () => {
-   const [page, setPage] = useState(1);
-   const [allProducts, setAllProducts] = useState<IProduct[]>([]);
    const [sortOption, setSortOption] = useState("default");
 
-   const { data, isLoading, error } = useCryptoAssets(page, itemsPerPage);
-
-   const maxPage = data?.maxPage || 1;
-
-   useEffect(() => {
-      if (data?.products) {
-         setAllProducts((prev) => [...prev, ...data.products]);
-      }
-   }, [data]);
+   const { data, isLoading, error, fetchNextPage, hasNextPage } =
+      useCryptoAssets(itemsPerPage);
 
    const sortedProducts = useMemo(() => {
-      if (!allProducts.length) return [];
+      if (!data?.products.length) return [];
 
-      const sorted = [...allProducts];
+      const sorted = [...data.products];
       switch (sortOption) {
          case "nameAZ":
             sorted.sort((a, b) => a.name.localeCompare(b.name));
@@ -46,20 +36,15 @@ const ProductList = () => {
       }
 
       return sorted;
-   }, [allProducts, sortOption]);
+   }, [data.products, sortOption]);
 
    const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setSortOption(e.target.value);
-      // setPage(1);
-   };
-
-   const handleShowMore = () => {
-      setPage((prev) => prev + 1);
    };
 
    if (isLoading) return <h2>Loading...</h2>;
    if (error) return <h2>Error loading products</h2>;
-   if (!allProducts || !allProducts.length)
+   if (!data.products || !data.products.length)
       return <h2>No products available</h2>;
 
    return (
@@ -82,8 +67,8 @@ const ProductList = () => {
                <ProductCard key={product.id} product={product} />
             ))}
          </div>
-         {page < maxPage && (
-            <Button onClick={handleShowMore} className='borderButton'>
+         {hasNextPage && (
+            <Button onClick={() => fetchNextPage()} className='borderButton'>
                Load more
             </Button>
          )}

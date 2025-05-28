@@ -1,7 +1,7 @@
 import TradeForm from "@/components/Form/TradeForm/TradeForm";
+import Header from "@/uikits/Header/Header";
 
 import styles from "./Trade.module.css";
-import Header from "@/uikits/Header/Header";
 
 const Trade = () => {
    return (
