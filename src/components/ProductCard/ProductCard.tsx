@@ -1,6 +1,7 @@
 import { IProduct } from "@/shared/types/product";
 import { useState } from "react";
 import Select from "@/uikits/Select/Select";
+import React from "react";
 
 import styles from "./ProductCard.module.css";
 

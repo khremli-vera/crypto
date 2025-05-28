@@ -8,11 +8,15 @@ import {
    pageLimit,
 } from "@/constants";
 import { IProduct, IProductDTO } from "@/shared/types/product";
-import { itemsPerPage } from "@/constants";
+
 import { ICryptoData } from "@/shared/types/cryptoData";
 import { coingeckoAssets } from "./coingeckoAssets";
+import { ratesUSD } from "./exChangeRates";
 
-export const useCryptoAssets = (page: number): UseQueryResult<ICryptoData> => {
+export const useCryptoAssets = (
+   page: number,
+   limit: number
+): UseQueryResult<ICryptoData> => {
    return useQuery({
       queryKey: ["crypto-assets", page],
       queryFn: async () => {
@@ -36,15 +40,14 @@ export const useCryptoAssets = (page: number): UseQueryResult<ICryptoData> => {
 
          // const coingeckoAssets: IProduct[] = await coingeckoRes.json();
 
-         // const ratesJson: any = await ratesRes.json();
-         // console.log(ratesJson);
+         // const ratesJson = await ratesRes.json();
+         // const ratesUSD = ratesJson.quotes;;
 
-         const [messariRes, ratesRes] = await Promise.all([
-            fetch(`${MESSARI_URL}?limit=${itemsPerPage * page}`),
-            fetch(EXCHANGERATE_URL),
+         const [messariRes] = await Promise.all([
+            fetch(`${MESSARI_URL}?limit=${limit}&page=${page}`),
          ]);
 
-         if (!messariRes.ok || !ratesRes.ok) {
+         if (!messariRes.ok) {
             throw new Error("Failed to fetch crypto data");
          }
 
@@ -53,9 +56,6 @@ export const useCryptoAssets = (page: number): UseQueryResult<ICryptoData> => {
          const messariAssets: IProductDTO[] = messariJson.data;
 
          const maxPage = pageLimit;
-
-         const ratesJson = await ratesRes.json();
-         const ratesUSD = ratesJson.quotes;
          const coingeckoMap = new Map(
             coingeckoAssets.map((item) => [item.symbol.toLowerCase(), item])
          );
@@ -72,11 +72,17 @@ export const useCryptoAssets = (page: number): UseQueryResult<ICryptoData> => {
                   slug: asset.slug,
                   image: match.image,
                   buy_price:
-                     (1 / ratesUSD[`USD${asset.symbol.toUpperCase()}`]) *
+                     (1 /
+                        ratesUSD[
+                           `USD${asset.symbol.toUpperCase().slice(0, 3)}`
+                        ]) *
                         (1 - rateMultiplier) ||
                      match.current_price * (1 + rateMultiplier),
                   sell_price:
-                     (1 / ratesUSD[`USD${asset.symbol.toUpperCase()}`]) *
+                     (1 /
+                        ratesUSD[
+                           `USD${asset.symbol.toUpperCase().slice(0, 3)}`
+                        ]) *
                         (1 + rateMultiplier) ||
                      match.current_price * (1 - rateMultiplier),
                };

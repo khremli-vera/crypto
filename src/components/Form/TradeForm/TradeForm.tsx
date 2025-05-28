@@ -4,12 +4,16 @@ import type { IProduct } from "@/shared/types/product";
 import Button from "@/uikits/Button/Button";
 import Select from "@/uikits/Select/Select";
 import { useCryptoAssets } from "@/hooks/useCryptoAssets";
-import { pageLimit } from "@/constants";
+import { itemsPerPage, pageLimit } from "@/constants";
 
 import styles from "./TradeForm.module.css";
 
 const TradeForm: React.FC = () => {
-   const { data, isLoading, error } = useCryptoAssets(pageLimit);
+   //load all products by 1 page
+   const { data, isLoading, error } = useCryptoAssets(
+      1,
+      pageLimit * itemsPerPage
+   );
 
    const products = data?.products || [];
 

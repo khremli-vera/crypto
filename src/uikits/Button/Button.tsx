@@ -9,6 +9,7 @@ interface ButtonProps {
    onClick?: MouseEventHandler<HTMLButtonElement>;
    className?: string;
    name?: string;
+   disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
    onClick,
    className = "",
    name,
+   disabled = false,
 }) => {
    const buttonClasses = [styles.button, styles[className], className]
       .filter(Boolean)
@@ -27,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
          onClick={onClick}
          className={buttonClasses}
          name={name}
+         disabled={disabled}
       >
          {children}
       </button>
