@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal/Modal";
 import { useState } from "react";
 import { useAuthStore } from "@/shared/stores/authStore";
-import Button from "@/uikits/Button/Button";
+import Button from "@/components/uikits/Button/Button";
 
 import styles from "./LoginModal.module.css";
 

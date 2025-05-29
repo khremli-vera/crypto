@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useAuthStore } from "@/shared/stores/authStore";
 import type { IProduct } from "@/shared/types/product";
-import Button from "@/uikits/Button/Button";
-import Select from "@/uikits/Select/Select";
+import Button from "@/components/uikits/Button/Button";
+import Select from "@/components/uikits/Select/Select";
 import { useCryptoAssets } from "@/hooks/useCryptoAssets";
 import { itemsPerPage, pageLimit } from "@/constants";
 
@@ -11,12 +11,11 @@ import styles from "./TradeForm.module.css";
 const TradeForm: React.FC = () => {
    const { data, isLoading, error } = useCryptoAssets(pageLimit * itemsPerPage);
 
-   const products = data.products.filter(
+   const products = data.preparedProducts.filter(
       (item) =>
          typeof item.buy_price === "number" &&
          typeof item.sell_price === "number"
    );
-   console.log(products.length);
 
    const { isAuthenticated } = useAuthStore();
    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(

@@ -1,4 +1,5 @@
 import { useQueries, useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { IMessariProduct, IProduct } from "@/shared/types/product";
 import {
    MESSARI_URL,
@@ -6,27 +7,12 @@ import {
    EXCHANGERATE_URL,
    rateMultiplier,
 } from "@/constants";
-import { ratesUSD } from "./exChangeRates";
-
-type FetchParams = {
-   url: string;
-};
-
-const fetchData = async <T>({ url }: FetchParams): Promise<T> => {
-   if (url == EXCHANGERATE_URL) {
-      return Promise.resolve({ quotes: ratesUSD }) as T;
-   }
-
-   const res = await fetch(url);
-   if (!res.ok) {
-      throw new Error(`Failed to fetch ${url}`);
-   }
-   const json = await res.json();
-   return json;
-};
+import { fetchData } from "@/shared/utils/fetchData";
 
 export const useCryptoAssets = (limit: number) => {
-   const results = useQueries({
+   const [preparedProducts, setPreparedProducts] = useState<IProduct[]>([]);
+
+   const [coingecko, rates] = useQueries({
       queries: [
          {
             queryKey: ["coingecko"],
@@ -47,17 +33,12 @@ export const useCryptoAssets = (limit: number) => {
       ],
    });
 
-   const [coingecko, rates] = results;
-
    const {
+      data: messariPages,
       fetchNextPage,
-      fetchPreviousPage,
       hasNextPage,
-      hasPreviousPage,
-      isFetchingNextPage,
-      isFetchingPreviousPage,
-      promise,
-      ...messariResult
+      isLoading: isLoadingMessari,
+      error: messariError,
    } = useInfiniteQuery({
       queryKey: ["messari", limit],
       queryFn: ({ pageParam }) =>
@@ -73,49 +54,44 @@ export const useCryptoAssets = (limit: number) => {
       },
    });
 
-   const isLoading = results.some((r) => r.isLoading);
-   const error = results.find((r) => r.error)?.error;
+   const isLoading = isLoadingMessari || coingecko.isLoading || rates.isLoading;
+   const error = messariError || coingecko.error || rates.error;
 
-   let products: IProduct[] = [];
-
-   if (messariResult.data && coingecko.data && rates.data) {
-      const messariAssets = messariResult.data.pages.flatMap(
-         (item) => item.data
-      );
-
+   useEffect(() => {
+      if (!messariPages?.pages || !coingecko.data || !rates.data) return;
+      const messariAssets = messariPages.pages.flatMap((item) => item.data);
       const coingeckoMap = new Map(
          coingecko.data.map((item) => [item.symbol.toLowerCase(), item])
       );
       const ratesUSD = rates.data.quotes;
-      products = messariAssets
-         .map((asset) => {
-            const match = coingeckoMap.get(asset.symbol.toLowerCase());
 
-            const rateKey = `USD${asset.symbol.toUpperCase().slice(0, 3)}`;
-            const rate = ratesUSD[rateKey];
-            return {
-               id: asset.id,
-               name: asset.name,
-               symbol: asset.symbol,
-               slug: asset.slug,
-               image: match ? match.image : "/assets/Placeholder.svg",
-               buy_price: rate
-                  ? (1 / rate) * (1 - rateMultiplier)
-                  : match
-                  ? match.current_price * (1 + rateMultiplier)
-                  : null,
-               sell_price: rate
-                  ? (1 / rate) * (1 + rateMultiplier)
-                  : match
-                  ? match.current_price * (1 - rateMultiplier)
-                  : null,
-            };
-         })
-         .filter(Boolean) as IProduct[];
-   }
+      const products = messariAssets.map((asset) => {
+         const match = coingeckoMap.get(asset.symbol.toLowerCase());
+         const rateKey = `USD${asset.symbol.toUpperCase().slice(0, 3)}`;
+         const rate = ratesUSD[rateKey];
+         return {
+            id: asset.id,
+            name: asset.name,
+            symbol: asset.symbol,
+            slug: asset.slug,
+            image: match ? match.image : "/assets/Placeholder.svg",
+            buy_price: rate
+               ? (1 / rate) * (1 - rateMultiplier)
+               : match
+               ? match.current_price * (1 + rateMultiplier)
+               : null,
+            sell_price: rate
+               ? (1 / rate) * (1 + rateMultiplier)
+               : match
+               ? match.current_price * (1 - rateMultiplier)
+               : null,
+         };
+      }) as IProduct[];
+      setPreparedProducts(products);
+   }, [messariPages?.pages, coingecko.data, rates.data]);
 
    return {
-      data: { products },
+      data: { preparedProducts },
       isLoading,
       error,
       fetchNextPage,

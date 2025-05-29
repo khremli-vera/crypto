@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useMemo } from "react";
 import { ProductCard } from "@/components/ProductCard/ProductCard";
-import Button from "@/uikits/Button/Button";
-import Select from "@/uikits/Select/Select";
+import Button from "@/components/uikits/Button/Button";
+import Select from "@/components/uikits/Select/Select";
 import { useCryptoAssets } from "@/hooks/useCryptoAssets";
 
 import styles from "./ProductList.module.css";
@@ -15,9 +15,9 @@ const ProductList = () => {
       useCryptoAssets(itemsPerPage);
 
    const sortedProducts = useMemo(() => {
-      if (!data?.products.length) return [];
+      if (!data?.preparedProducts.length) return [];
 
-      const sorted = [...data.products];
+      const sorted = [...data.preparedProducts];
       switch (sortOption) {
          case "nameAZ":
             sorted.sort((a, b) => a.name.localeCompare(b.name));
@@ -40,7 +40,7 @@ const ProductList = () => {
       }
 
       return sorted;
-   }, [data.products, sortOption]);
+   }, [data.preparedProducts, sortOption]);
 
    const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setSortOption(e.target.value);
@@ -48,7 +48,7 @@ const ProductList = () => {
 
    if (isLoading) return <h2>Loading...</h2>;
    if (error) return <h2>Error loading products</h2>;
-   if (!data.products || !data.products.length)
+   if (!data.preparedProducts || !data.preparedProducts.length)
       return <h2>No products available</h2>;
 
    return (

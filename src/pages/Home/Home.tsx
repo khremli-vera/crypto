@@ -1,5 +1,5 @@
 import ProductList from "@/components/ProductList/ProductList";
-import Header from "@/uikits/Header/Header";
+import Header from "@/components/uikits/Header/Header";
 
 import styles from "./Home.module.css";
 
