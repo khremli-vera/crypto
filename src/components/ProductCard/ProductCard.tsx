@@ -29,14 +29,19 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
                {product.symbol.toUpperCase()}
             </span>
          </h3>
-         {priceType === "buy" ? (
-            <p className={styles.productPrice}>
-               ${product.buy_price.toFixed(4)}
-            </p>
+         {typeof product.buy_price === "number" &&
+         typeof product.sell_price === "number" ? (
+            priceType === "buy" ? (
+               <p className={styles.productPrice}>
+                  ${product.buy_price.toFixed(4)}
+               </p>
+            ) : (
+               <p className={styles.productPrice}>
+                  ${product.sell_price.toFixed(4)}
+               </p>
+            )
          ) : (
-            <p className={styles.productPrice}>
-               ${product.sell_price.toFixed(4)}
-            </p>
+            <p className={styles.productPrice}>No data</p>
          )}
 
          <Select

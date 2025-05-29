@@ -9,10 +9,14 @@ import { itemsPerPage, pageLimit } from "@/constants";
 import styles from "./TradeForm.module.css";
 
 const TradeForm: React.FC = () => {
-   //add limit 100 products
    const { data, isLoading, error } = useCryptoAssets(pageLimit * itemsPerPage);
 
-   const products = data?.products || [];
+   const products = data.products.filter(
+      (item) =>
+         typeof item.buy_price === "number" &&
+         typeof item.sell_price === "number"
+   );
+   console.log(products.length);
 
    const { isAuthenticated } = useAuthStore();
    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(
@@ -64,8 +68,8 @@ const TradeForm: React.FC = () => {
 
       const rate =
          operationType == "buy"
-            ? selectedProduct.buy_price
-            : selectedProduct.sell_price;
+            ? selectedProduct.buy_price!
+            : selectedProduct.sell_price!;
 
       if (isCryptoBase) {
          outputFn((num * rate).toFixed(2));

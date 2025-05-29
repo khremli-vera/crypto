@@ -21,9 +21,7 @@ const fetchData = async <T>({ url }: FetchParams): Promise<T> => {
    if (!res.ok) {
       throw new Error(`Failed to fetch ${url}`);
    }
-
    const json = await res.json();
-   console.log(json);
    return json;
 };
 
@@ -84,7 +82,7 @@ export const useCryptoAssets = (limit: number) => {
       const messariAssets = messariResult.data.pages.flatMap(
          (item) => item.data
       );
-      console.log(messariAssets);
+
       const coingeckoMap = new Map(
          coingecko.data.map((item) => [item.symbol.toLowerCase(), item])
       );
@@ -92,7 +90,7 @@ export const useCryptoAssets = (limit: number) => {
       products = messariAssets
          .map((asset) => {
             const match = coingeckoMap.get(asset.symbol.toLowerCase());
-            if (!match) return null;
+
             const rateKey = `USD${asset.symbol.toUpperCase().slice(0, 3)}`;
             const rate = ratesUSD[rateKey];
             return {
@@ -100,13 +98,17 @@ export const useCryptoAssets = (limit: number) => {
                name: asset.name,
                symbol: asset.symbol,
                slug: asset.slug,
-               image: match.image,
+               image: match ? match.image : "/assets/Placeholder.svg",
                buy_price: rate
                   ? (1 / rate) * (1 - rateMultiplier)
-                  : match.current_price * (1 + rateMultiplier),
+                  : match
+                  ? match.current_price * (1 + rateMultiplier)
+                  : null,
                sell_price: rate
                   ? (1 / rate) * (1 + rateMultiplier)
-                  : match.current_price * (1 - rateMultiplier),
+                  : match
+                  ? match.current_price * (1 - rateMultiplier)
+                  : null,
             };
          })
          .filter(Boolean) as IProduct[];

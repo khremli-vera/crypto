@@ -26,10 +26,14 @@ const ProductList = () => {
             sorted.sort((a, b) => b.name.localeCompare(a.name));
             break;
          case "priceToHigh":
-            sorted.sort((a, b) => a.buy_price - b.buy_price);
+            sorted
+               .filter((item) => typeof item.buy_price === "number")
+               .sort((a, b) => a.buy_price! - b.buy_price!);
             break;
          case "priceToLow":
-            sorted.sort((a, b) => b.buy_price - a.buy_price);
+            sorted
+               .filter((item) => typeof item.buy_price === "number")
+               .sort((a, b) => b.buy_price! - a.buy_price!);
             break;
          default:
             sorted;

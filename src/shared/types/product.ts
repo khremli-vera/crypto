@@ -5,8 +5,8 @@ export interface IProduct {
    symbol: string;
    image: string;
    slug?: string;
-   buy_price: number;
-   sell_price: number;
+   buy_price: number | null;
+   sell_price: number | null;
 }
 
 export interface IMessariProduct {
