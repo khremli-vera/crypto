@@ -26,6 +26,7 @@ const Header = () => {
                className={({ isActive }) =>
                   `${styles.headerLink} ${isActive ? styles.activeLink : ""}`
                }
+               title={!isAuthenticated ? "Please log in to open tab" : ""}
             >
                Trade
             </NavLink>
