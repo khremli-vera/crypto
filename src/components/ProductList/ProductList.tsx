@@ -4,9 +4,9 @@ import { ProductCard } from "@/components/ProductCard/ProductCard";
 import Button from "@/components/uikits/Button/Button";
 import Select from "@/components/uikits/Select/Select";
 import { useCryptoAssets } from "@/hooks/useCryptoAssets";
+import { itemsPerPage } from "@/constants";
 
 import styles from "./ProductList.module.css";
-import { itemsPerPage } from "@/constants";
 
 const ProductList = () => {
    const [sortOption, setSortOption] = useState("default");
