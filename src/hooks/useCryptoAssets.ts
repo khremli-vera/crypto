@@ -66,14 +66,15 @@ export const useCryptoAssets = (limit: number) => {
       const ratesUSD = rates.data.quotes;
 
       const products = messariAssets.map((asset) => {
+         const { id, name, symbol, slug } = asset;
          const match = coingeckoMap.get(asset.symbol.toLowerCase());
          const rateKey = `USD${asset.symbol.toUpperCase().slice(0, 3)}`;
          const rate = ratesUSD[rateKey];
          return {
-            id: asset.id,
-            name: asset.name,
-            symbol: asset.symbol,
-            slug: asset.slug,
+            id,
+            name,
+            symbol,
+            slug,
             image: match ? match.image : "/assets/Placeholder.svg",
             buy_price: rate
                ? (1 / rate) * (1 - rateMultiplier)
