@@ -25,7 +25,7 @@ export const useCryptoAssets = (limit: number) => {
          {
             queryKey: ["rates"],
             queryFn: () =>
-               fetchData<{ quotes: Record<string, number> }>({
+               fetchData<{ quotes: Record<string, number>; success: boolean }>({
                   url: EXCHANGERATE_URL,
                }),
             staleTime: 1000 * 60,
@@ -59,11 +59,13 @@ export const useCryptoAssets = (limit: number) => {
 
    useEffect(() => {
       if (!messariPages?.pages || !coingecko.data || !rates.data) return;
+      const ratesUSD: Record<string, number> =
+         rates.data.success === true ? rates.data.quotes : {};
+
       const messariAssets = messariPages.pages.flatMap((item) => item.data);
       const coingeckoMap = new Map(
          coingecko.data.map((item) => [item.symbol.toLowerCase(), item])
       );
-      const ratesUSD = rates.data.quotes;
 
       const products = messariAssets.map((asset) => {
          const { id, name, symbol, slug } = asset;
@@ -78,13 +80,13 @@ export const useCryptoAssets = (limit: number) => {
             image: match ? match.image : "/assets/Placeholder.svg",
             buy_price: rate
                ? (1 / rate) * (1 - rateMultiplier)
-               : match
-               ? match.current_price * (1 + rateMultiplier)
+               : asset.metrics.market_data.price_usd
+               ? asset.metrics.market_data.price_usd * (1 + rateMultiplier)
                : null,
             sell_price: rate
                ? (1 / rate) * (1 + rateMultiplier)
-               : match
-               ? match.current_price * (1 - rateMultiplier)
+               : asset.metrics.market_data.price_usd
+               ? asset.metrics.market_data.price_usd * (1 - rateMultiplier)
                : null,
          };
       }) as IProduct[];
