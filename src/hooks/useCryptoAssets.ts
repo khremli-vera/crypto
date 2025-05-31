@@ -46,7 +46,7 @@ export const useCryptoAssets = (limit: number) => {
             url: `${MESSARI_URL}?limit=${limit}&page=${pageParam}`,
          }),
       initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      getNextPageParam: (lastPage, _, lastPageParam) => {
          if (lastPage.data.length === 0) {
             return undefined;
          }

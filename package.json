@@ -4,15 +4,19 @@
    "version": "0.0.0",
    "type": "module",
    "git": "https://github.com/khremli-vera/crypto.git",
+   "homepage": "https://khremli-vera.github.io/crypto",
    "scripts": {
       "dev": "vite",
       "build": "tsc -b && vite build",
       "lint": "eslint .",
-      "preview": "vite preview"
+      "preview": "vite preview",
+      "predeploy": "npm run build",
+      "deploy": "gh-pages -d dist"
    },
    "dependencies": {
       "@tanstack/react-query": "^5.76.1",
       "@tanstack/react-query-devtools": "^5.76.1",
+      "gh-pages": "^6.3.0",
       "path": "^0.12.7",
       "react": "^19.1.0",
       "react-dom": "^19.1.0",
