@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { LoginModal } from "@/components/Modal/LoginModal";
 import { useState } from "react";
 import { useAuthStore } from "@/shared/stores/authStore";
-import Button from "@/uikits/Button/Button";
+import Button from "@/components/uikits/Button/Button";
 
 import styles from "./Header.module.css";
 
@@ -26,6 +26,7 @@ const Header = () => {
                className={({ isActive }) =>
                   `${styles.headerLink} ${isActive ? styles.activeLink : ""}`
                }
+               title={!isAuthenticated ? "Please log in to open tab" : ""}
             >
                Trade
             </NavLink>

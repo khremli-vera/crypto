@@ -1,5 +1,5 @@
 import TradeForm from "@/components/Form/TradeForm/TradeForm";
-import Header from "@/uikits/Header/Header";
+import Header from "@/components/uikits/Header/Header";
 
 import styles from "./Trade.module.css";
 

@@ -9,11 +9,7 @@ const BaseLayout = () => {
       initializeAuth();
    }, []);
 
-   return (
-      <>
-         <Outlet />
-      </>
-   );
+   return <Outlet />;
 };
 
 export default BaseLayout;

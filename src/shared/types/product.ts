@@ -14,4 +14,9 @@ export interface IMessariProduct {
    name: string;
    symbol: string;
    slug: string;
+   metrics: {
+      market_data: {
+         price_usd: number;
+      };
+   };
 }
