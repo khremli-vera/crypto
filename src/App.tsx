@@ -11,7 +11,7 @@ function App() {
    return (
       <QueryClientProvider client={queryClient}>
          <React.StrictMode>
-            <BrowserRouter>
+            <BrowserRouter basename='/crypto'>
                <AppRoutes />
             </BrowserRouter>
          </React.StrictMode>
